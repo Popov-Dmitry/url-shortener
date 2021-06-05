@@ -25,4 +25,8 @@ public class Url {
 
     @Column(name = "short_link")
     private String shortLink;
+
+    public Url(String originalLink) {
+        this.originalLink = originalLink;
+    }
 }
