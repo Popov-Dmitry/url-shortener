@@ -1,0 +1,18 @@
+.container {
+    width:700px;
+    height:200px;
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin:-100px 0 0 -320px;
+}
+.input-link {
+    width: 700px;
+    font-size: 25px;
+    padding: 5px 10px 5px 10px;
+}
+
+.accept-btn {
+    width: 100px;
+    height: 40px;
+}

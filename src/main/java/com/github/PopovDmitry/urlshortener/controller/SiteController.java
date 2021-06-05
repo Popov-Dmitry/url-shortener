@@ -5,6 +5,7 @@ import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class SiteController {
 
     @GetMapping("")
     public String getMainPage() {
-        return "";
+        return "index";
     }
 
     @GetMapping("/*")
@@ -39,6 +40,6 @@ public class SiteController {
         } catch (NotFoundException | IOException exception) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT).build();
     }
 }
