@@ -11,5 +11,6 @@ import java.util.UUID;
 public interface UrlRepository extends JpaRepository<Url, UUID> {
 
     Optional<Url> findByOriginalLink(String originalLink);
+    Optional<Url> findByShortLink(String shortLink);
 
 }

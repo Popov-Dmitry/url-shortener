@@ -3,6 +3,7 @@ package com.github.PopovDmitry.urlshortener.api.service;
 import com.github.PopovDmitry.urlshortener.api.dto.UrlDTO;
 import com.github.PopovDmitry.urlshortener.api.model.Url;
 import com.github.PopovDmitry.urlshortener.api.repository.UrlRepository;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,6 @@ public class UrlService {
     private final static String PREFIX = "http://localhost:8080/";
 
     public String getShortLink(UrlDTO urlDTO) {
-
         Optional<Url> optionalUrl = urlRepository.findByOriginalLink(urlDTO.getOriginalUrl());
 
         if (optionalUrl.isPresent()) {
@@ -34,6 +34,15 @@ public class UrlService {
         urlRepository.save(url);
 
         return url.getShortLink();
+    }
+
+    public String getOriginalLink(String shortLink) throws NotFoundException {
+        Optional<Url> optionalUrl = urlRepository.findByShortLink(shortLink);
+
+        if (optionalUrl.isPresent()) {
+            return optionalUrl.get().getOriginalLink();
+        }
+        throw new NotFoundException("Url is not found.");
     }
 
     private String generateShortLink(String originalLink) {
