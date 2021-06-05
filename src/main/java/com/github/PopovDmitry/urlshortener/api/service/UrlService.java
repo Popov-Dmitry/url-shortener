@@ -18,6 +18,8 @@ public class UrlService {
 
     private final UrlRepository urlRepository;
 
+    private final static String PREFIX = "http://localhost:8080/";
+
     public String getShortLink(UrlDTO urlDTO) {
 
         Optional<Url> optionalUrl = urlRepository.findByOriginalLink(urlDTO.getOriginalUrl());
@@ -35,6 +37,10 @@ public class UrlService {
     }
 
     private String generateShortLink(String originalLink) {
-        return DigestUtils.md5DigestAsHex(originalLink.getBytes(StandardCharsets.UTF_8)).substring(0, 4);
+        return PREFIX +
+                DigestUtils
+                        .md5DigestAsHex(
+                                originalLink.getBytes(StandardCharsets.UTF_8)
+                        ).substring(0, 4);
     }
 }

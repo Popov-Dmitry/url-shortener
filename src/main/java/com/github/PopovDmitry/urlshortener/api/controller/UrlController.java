@@ -1,6 +1,8 @@
 package com.github.PopovDmitry.urlshortener.api.controller;
 
 import com.github.PopovDmitry.urlshortener.api.dto.UrlDTO;
+import com.github.PopovDmitry.urlshortener.api.service.UrlService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -11,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @Slf4j
 @RequestMapping("/api/public")
+@AllArgsConstructor
 public class UrlController {
 
-    @PostMapping("/generate")
-    public ResponseEntity<?> generate(@RequestBody UrlDTO urlDTO) {
+    private final UrlService urlService;
 
-        return null;
+    @PostMapping("/generate")
+    public ResponseEntity<String> generate(@RequestBody UrlDTO urlDTO) {
+        return ResponseEntity.ok(urlService.getShortLink(urlDTO));
     }
 }
