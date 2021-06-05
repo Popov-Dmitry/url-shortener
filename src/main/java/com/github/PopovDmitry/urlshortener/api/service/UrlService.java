@@ -48,10 +48,20 @@ public class UrlService {
     }
 
     private String generateShortLink(String originalLink) {
-        return prefix +
-                DigestUtils
-                        .md5DigestAsHex(
-                                originalLink.getBytes(StandardCharsets.UTF_8)
-                        ).substring(0, 4);
+        String hash = DigestUtils.md5DigestAsHex(
+                        originalLink.getBytes(StandardCharsets.UTF_8));
+        String shortLink = prefix + hash.substring(0, 4);
+        for (int i = 0; i < hash.length() - 4; i++) {
+            if (urlRepository.findByShortLink(prefix + hash.substring(i, i + 4)).isEmpty()) {
+                shortLink = prefix + hash.substring(i, i + 4);
+                break;
+            }
+            if (i == 27) {
+                hash = DigestUtils.md5DigestAsHex(
+                        hash.getBytes(StandardCharsets.UTF_8));
+                i = 0;
+            }
+        }
+        return shortLink;
     }
 }
