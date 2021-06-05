@@ -4,8 +4,9 @@ import com.github.PopovDmitry.urlshortener.api.dto.UrlDTO;
 import com.github.PopovDmitry.urlshortener.api.model.Url;
 import com.github.PopovDmitry.urlshortener.api.repository.UrlRepository;
 import javassist.NotFoundException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -14,22 +15,23 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UrlService {
 
     private final UrlRepository urlRepository;
 
-    private final static String PREFIX = "http://localhost:8080/";
+    @Value("${site.url}")
+    private String prefix;
 
     public String getShortLink(UrlDTO urlDTO) {
-        Optional<Url> optionalUrl = urlRepository.findByOriginalLink(urlDTO.getOriginalUrl());
+        Optional<Url> optionalUrl = urlRepository.findByOriginalLink(urlDTO.getUrl());
 
         if (optionalUrl.isPresent()) {
             return optionalUrl.get().getShortLink();
         }
 
-        Url url = new Url(urlDTO.getOriginalUrl());
-        url.setShortLink(generateShortLink(urlDTO.getOriginalUrl()));
+        Url url = new Url(urlDTO.getUrl());
+        url.setShortLink(generateShortLink(urlDTO.getUrl()));
 
         urlRepository.save(url);
 
@@ -46,7 +48,7 @@ public class UrlService {
     }
 
     private String generateShortLink(String originalLink) {
-        return PREFIX +
+        return prefix +
                 DigestUtils
                         .md5DigestAsHex(
                                 originalLink.getBytes(StandardCharsets.UTF_8)

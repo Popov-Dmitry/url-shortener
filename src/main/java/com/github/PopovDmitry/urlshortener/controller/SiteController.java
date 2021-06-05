@@ -32,11 +32,11 @@ public class SiteController {
 
     @GetMapping("/*")
     public ResponseEntity<?> redirect(HttpServletRequest request, HttpServletResponse response) {
+        log.info(request.getRequestURL().toString());
         try {
             response.sendRedirect(urlService.getOriginalLink(
                     request.getRequestURL()
-                            .toString()
-                            .replaceAll(siteUrl, "")));
+                            .toString()));
         } catch (NotFoundException | IOException exception) {
             return ResponseEntity.notFound().build();
         }

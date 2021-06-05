@@ -19,7 +19,9 @@ public class UrlController {
     private final UrlService urlService;
 
     @PostMapping("/generate")
-    public ResponseEntity<String> generate(@RequestBody UrlDTO urlDTO) {
-        return ResponseEntity.ok(urlService.getShortLink(urlDTO));
+    public ResponseEntity<UrlDTO> generate(@RequestBody UrlDTO urlDTO) {
+        return ResponseEntity.ok(
+                new UrlDTO(
+                        urlService.getShortLink(urlDTO)));
     }
 }
