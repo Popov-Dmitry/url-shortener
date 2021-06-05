@@ -21,10 +21,6 @@ public class SiteController {
 
     private final UrlService urlService;
 
-    @Value("${site.url}")
-    private String siteUrl;
-
-
     @GetMapping("")
     public String getMainPage() {
         return "index";
@@ -32,11 +28,16 @@ public class SiteController {
 
     @GetMapping("/*")
     public ResponseEntity<?> redirect(HttpServletRequest request, HttpServletResponse response) {
-        log.info(request.getRequestURL().toString());
         try {
-            response.sendRedirect(urlService.getOriginalLink(
+            String originalLink = urlService.getOriginalLink(
                     request.getRequestURL()
-                            .toString()));
+                            .toString());
+            if (originalLink.startsWith("https://") || originalLink.startsWith("http://")) {
+                response.sendRedirect(originalLink);
+            }
+            else {
+                response.sendRedirect("http://" + originalLink);
+            }
         } catch (NotFoundException | IOException exception) {
             return ResponseEntity.notFound().build();
         }

@@ -14,6 +14,7 @@ $(document).ready(function () {
                 async: false,
                 success: function(resp) {
                     document.getElementById("input-link").value = resp.url;
+                    selection();
                 },
                 error: function (data) {
                     alert(data.status + ':' + data.statusText);
@@ -28,4 +29,12 @@ $(document).ready(function () {
 
 function isValidUrl(url) {
     return /[-a-zA-Z0-9@:%_\+.~#?&\/=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&\/=]*)?/gi.test(url);
+}
+
+function selection() {
+    let element = document.getElementById("input-link");
+    let range = document.createRange();
+    range.selectNode(element);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
 }
