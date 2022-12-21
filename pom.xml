@@ -12,7 +12,7 @@
 	<artifactId>url-shortener</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>url-shortener</name>
-	<description>Demo project for Spring Boot</description>
+	<description>A simple link shortener with a minimalistic web interface using Spring Boot</description>
 	<properties>
 		<java.version>16</java.version>
 	</properties>
